@@ -19,12 +19,19 @@ class StorePostRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
-    public function rules(): array
+    public function rules()
     {
-        return [
-            'title' => 'required',
-            'post_text' => 'required',
+        $rules = [
+            'oz.title' => 'required',
+            'oz.post_text' => 'required',
             'category_id' => 'required',
         ];
+
+        foreach (config('translatable.locales') as $locale) {
+            $rules[$locale . '.title'] = 'string';
+            $rules[$locale . '.post_text'] = 'string';
+        }
+
+        return $rules;
     }
 }
